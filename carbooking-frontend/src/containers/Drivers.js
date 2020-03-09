@@ -3,11 +3,15 @@ import { List, Avatar, Card, Button } from "antd";
 import axios from "axios";
 import * as CONFIGS from "../configs";
 import styles from "./Drivers.css";
+import { AuthContext } from "../contexts/AuthContext";
+import { getLSItem } from "../utils/localStorage";
 
 class Drivers extends PureComponent {
   state = {
     drivers: []
   };
+
+  static contextType = AuthContext;
 
   componentDidMount() {
     const searchURI = `${CONFIGS.SRVR_URI}/data/drivers`;
@@ -42,9 +46,30 @@ class Drivers extends PureComponent {
   };
 
   handleDriverSelect = item => {
+    const { isLoggedIn } = this.context;
     console.log("item :", item);
     const bookingData = this.getQueryParams();
     console.log("bookingData :", bookingData);
+    if (isLoggedIn) {
+      const bookingURI = "/trip/book";
+      const { token } = getLSItem("auth");
+      axios
+        .post(
+          bookingURI,
+          {
+            data: bookingData
+          },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`
+            }
+          }
+        )
+        .then(response => {
+          console.log("response :", response);
+        })
+        .catch(err => console.log("err :", err));
+    }
   };
 
   render() {

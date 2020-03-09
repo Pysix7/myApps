@@ -55,7 +55,8 @@ mongoose
     const Data = cityData.map(item => {
       return {
         name: item.name,
-        state: item.state
+        state: item.state,
+        distance: item.distance
       };
     });
 

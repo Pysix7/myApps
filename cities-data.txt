@@ -1,0 +1,11 @@
+Delhi - 2154
+Bhopal- 1447
+Chennai - 347
+Patna - 2097
+Mumbai - 984
+Lucknow - 1938
+Mirzapur - 1768
+Ahmedabad - 1439
+Pune - 841
+Kolkata - 1888
+Hyderabad - 569
