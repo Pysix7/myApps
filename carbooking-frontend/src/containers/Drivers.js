@@ -3,7 +3,7 @@ import { List, Avatar, Card, Button } from "antd";
 import axios from "axios";
 import * as CONFIGS from "../configs";
 import styles from "./Drivers.css";
-import { AuthContext } from "../contexts/AuthContext";
+import { AppContext } from "../contexts/AppContext";
 import { getLSItem } from "../utils/localStorage";
 
 class Drivers extends PureComponent {
@@ -11,7 +11,7 @@ class Drivers extends PureComponent {
     drivers: []
   };
 
-  static contextType = AuthContext;
+  static contextType = AppContext;
 
   componentDidMount() {
     const searchURI = `${CONFIGS.SRVR_URI}/data/drivers`;
@@ -33,42 +33,46 @@ class Drivers extends PureComponent {
 
   getQueryParams = () => {
     const query = new URLSearchParams(this.props.location.search);
-    const params = [];
+    const stuff = {};
     for (let param of query.entries()) {
-      const stuff = {};
       stuff[param[0]] = param[1];
-
-      params.push({
-        ...stuff
-      });
     }
-    return params;
+
+    return stuff;
   };
 
   handleDriverSelect = item => {
-    const { isLoggedIn } = this.context;
-    console.log("item :", item);
-    const bookingData = this.getQueryParams();
-    console.log("bookingData :", bookingData);
+    const { isLoggedIn, bookingData } = this.context;
+
     if (isLoggedIn) {
-      const bookingURI = "/trip/book";
+      const bookingURI = CONFIGS.SRVR_URI + "/trip/book";
       const { token } = getLSItem("auth");
       axios
         .post(
           bookingURI,
           {
-            data: bookingData
+            ...bookingData,
+            driverId: item._id,
+            driverName: item.name,
+            driverCharge: item.charge
           },
           {
             headers: {
-              Authorization: `Bearer ${token}`
+              authorization: `Bearer ${token}`
             }
           }
         )
         .then(response => {
-          console.log("response :", response);
+          this.props.history.push(
+            "/checkout?client=" +
+              response.data.client +
+              "&amount=" +
+              response.data.amount
+          );
         })
         .catch(err => console.log("err :", err));
+    } else if (!isLoggedIn) {
+      this.props.history.push("/login?redirect=book-trip");
     }
   };
 

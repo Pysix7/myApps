@@ -3,10 +3,21 @@ const CONFIGS = require("./configs");
 const rateLimit = require("express-rate-limit");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
+const User = require("./model/user");
+const jwt = require("jsonwebtoken");
+
+const City = require("./model/cities");
+const cityData = require("./files/cities");
+const Driver = require("./model/drivers");
+const driverData = require("./files/drivers");
 
 const appRoutes = require("./routes/data");
 const authRoutes = require("./routes/auth");
+const tripRoutes = require("./routes/trip");
+
 const srvr = express();
+
+const mongoDBURI = "mongodb://localhost/instacar";
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -16,6 +27,19 @@ const limiter = rateLimit({
 //  apply to all requests
 srvr.use(limiter);
 srvr.use(bodyParser.json());
+
+srvr.use((req, res, next) => {
+  const authorizationHeader =
+    req.headers && req.headers.authorization
+      ? req.headers.authorization.split(" ")
+      : null;
+
+  if (authorizationHeader && authorizationHeader[0] === "Bearer") {
+    const validToken = jwt.verify(authorizationHeader[1], CONFIGS.JWT_SECRET);
+    console.log("validToken :", validToken);
+  }
+  next();
+});
 
 srvr.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -34,6 +58,7 @@ srvr.use("/status", (req, res, next) => {
 
 srvr.use("/data", appRoutes);
 srvr.use("/auth", authRoutes);
+srvr.use("/trip", tripRoutes);
 
 srvr.use((error, req, res, next) => {
   console.log(error);
@@ -42,12 +67,6 @@ srvr.use((error, req, res, next) => {
   const data = error.data;
   res.status(status).json({ message: message, data: data });
 });
-const mongoDBURI = "mongodb://localhost/instacar";
-
-const City = require("./model/cities");
-const cityData = require("./files/cities");
-const Driver = require("./model/drivers");
-const driverData = require("./files/drivers");
 
 mongoose
   .connect(mongoDBURI, { useNewUrlParser: true, useUnifiedTopology: true })

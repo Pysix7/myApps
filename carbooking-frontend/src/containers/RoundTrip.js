@@ -3,6 +3,7 @@ import * as CONFIGS from "../configs";
 import axios from "axios";
 import { Button, Input, Form, Select, DatePicker, Row, Col, Card } from "antd";
 import moment from "moment";
+import { AppContext } from "../contexts/AppContext";
 
 const { Option } = Select;
 
@@ -14,6 +15,8 @@ class RoundTrip extends PureComponent {
     toDate: null,
     cities: []
   };
+
+  static contextType = AppContext;
 
   searchCity = e => {
     const searchQuery = e;
@@ -38,35 +41,32 @@ class RoundTrip extends PureComponent {
 
   bookTrip = e => {
     const { cities } = this.state;
+    const { setBookingData } = this.context;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-        const fromDate = moment(values.fromDate).format("DD-MM-YYYY");
-        const toDate = moment(values.toDate).format("DD-MM-YYYY");
+        const fromDate = moment(values.fromDate).format("MM-DD-YYYY");
+        const toDate = moment(values.toDate).format("MM-DD-YYYY");
         const origin = values.origin;
         const destination = values.destination;
         const { distance } = cities.find(item => item.name === destination);
 
-        const BOOKING_URI =
-          "?origin=" +
-          origin +
-          "&destination=" +
-          destination +
-          "&fromDate=" +
-          fromDate +
-          "&toDate=" +
-          toDate +
-          "&distance=" +
-          distance;
+        setBookingData({
+          fromDate,
+          toDate,
+          origin,
+          destination,
+          distance
+        });
 
-        this.props.history.push("/book-trip" + BOOKING_URI);
+        this.props.history.push("/book-trip");
       }
     });
   };
 
   disableFromDate = currentDate => {
-    // Can not select days before today and today
-    return currentDate && currentDate < moment().endOf("day");
+    // Can not select days before today
+    return currentDate && currentDate < moment().subtract(1, "days");
   };
 
   disableToDate = value => {

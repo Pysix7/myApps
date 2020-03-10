@@ -1,15 +1,21 @@
 import React, { Component, Fragment } from "react";
 import Booking from "./containers/Booking";
+import { Elements } from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 // import './App.css';
-import AuthContextProvider from "./contexts/AuthContext";
+import AppContextProvider from "./contexts/AppContext";
+
+const stripePromise = loadStripe("pk_test_zLIW6khiozz8A7flRbrFFDfy00bDWYuCav");
 
 class App extends Component {
   render() {
     return (
       <Fragment>
-        <AuthContextProvider>
-          <Booking />
-        </AuthContextProvider>
+        <Elements stripe={stripePromise}>
+          <AppContextProvider>
+            <Booking />
+          </AppContextProvider>
+        </Elements>
       </Fragment>
     );
   }

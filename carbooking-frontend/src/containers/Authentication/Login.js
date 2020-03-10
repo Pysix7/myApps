@@ -1,12 +1,22 @@
 import React, { PureComponent, Fragment } from "react";
-import { Form, Input, Modal, Button } from "antd";
+import { Form, Input, Modal, Card, Button, message } from "antd";
 import axios from "axios";
 import * as CONFIGS from "../../configs";
-import { AuthContext } from "../../contexts/AuthContext";
+import { AppContext } from "../../contexts/AppContext";
 import { setLSItem } from "../../utils/localStorage";
 
 class Login extends PureComponent {
-  static contextType = AuthContext;
+  static contextType = AppContext;
+
+  getQueryParams = () => {
+    const query = new URLSearchParams(this.props.location.search);
+    const stuff = {};
+    for (let param of query.entries()) {
+      stuff[param[0]] = param[1];
+    }
+
+    return stuff;
+  };
 
   handleSubmit = e => {
     e.preventDefault();
@@ -24,15 +34,23 @@ class Login extends PureComponent {
             response.data &&
             response.data.message === "success"
           ) {
+            const qp = this.getQueryParams();
             setLSItem("auth", {
               token: response.data.token,
               expiryTime: response.data.expiryTime
             });
-            closeModal();
+            // closeModal();
+            if (qp.redirect) {
+              this.props.history.push(qp.redirect);
+            } else {
+              this.props.history.push("/");
+            }
             toggleLoginState();
           }
         })
-        .catch(err => console.log("err :", err));
+        .catch(err => {
+          message.error(err.response.data.message);
+        });
     });
   };
 
@@ -44,13 +62,14 @@ class Login extends PureComponent {
 
     return (
       <Fragment>
-        <Modal
+        {/* <Modal
           title="Login"
           visible={true}
           closable
           onCancel={closeModal}
           footer={null}
-        >
+        > */}
+        <Card bordered={false} bodyStyle={{ padding: "5% 30%" }}>
           <Form>
             <Form.Item label="E-mail">
               {getFieldDecorator("email", {
@@ -85,8 +104,12 @@ class Login extends PureComponent {
                 Login
               </Button>
             </Form.Item>
+            {/* <p>
+              Don't Have an account? Sign Up
+            </p> */}
           </Form>
-        </Modal>
+          {/* </Modal> */}
+        </Card>
       </Fragment>
     );
   }

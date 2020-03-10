@@ -5,7 +5,8 @@ import Drivers from "./Drivers";
 import styles from "./Booking.css";
 import SignUpModal from "./Authentication/Signup";
 import LoginModal from "./Authentication/Login";
-import { AuthContext } from "../contexts/AuthContext";
+import CheckoutForm from "../components/CheckoutForm";
+import { AppContext } from "../contexts/AppContext";
 import { getLSItem } from "../utils/localStorage";
 
 class Blog extends Component {
@@ -15,7 +16,7 @@ class Blog extends Component {
     // isLoggedIn: false
   };
 
-  static contextType = AuthContext;
+  static contextType = AppContext;
 
   componentDidMount() {
     const authData = getLSItem("auth");
@@ -71,33 +72,21 @@ class Blog extends Component {
                   <Link to="/roundtrip">RoundTrip</Link>
                 </li>
                 {!isLoggedIn ? (
-                  <li style={{ float: "right" }}>
-                    <Link
-                      onClick={this.handleLoginClick}
-                      style={{ marginRight: "30px" }}
-                      to="/login"
-                    >
+                  <li style={{ float: "right", margin: "15px 30px 0 0" }}>
+                    <Link onClick={this.handleLoginClick} to="/login">
                       Login
                     </Link>
                   </li>
                 ) : (
-                  <li style={{ float: "right" }}>
-                    <Link
-                      onClick={this.handleLogoutClick}
-                      style={{ marginRight: "30px" }}
-                      to="/logout"
-                    >
+                  <li style={{ float: "right", margin: "15px 30px 0 0" }}>
+                    <Link onClick={this.handleLogoutClick} to="/logout">
                       Logout
                     </Link>
                   </li>
                 )}
                 {!isLoggedIn ? (
-                  <li style={{ float: "right" }}>
-                    <Link
-                      onClick={this.handleSignUpClick}
-                      style={{ marginRight: "30px" }}
-                      to="/signup"
-                    >
+                  <li style={{ float: "right", margin: "15px 30px 0 0" }}>
+                    <Link onClick={this.handleSignUpClick} to="/signup">
                       Sign Up
                     </Link>
                   </li>
@@ -121,7 +110,7 @@ class Blog extends Component {
                         height: "100%"
                       }}
                     >
-                      <h3 className={styles.welcome}>Welcome to Instacar</h3>
+                      <h3 className={styles.welcome}>Welcome to Car Booking</h3>
                     </div>
                   </Fragment>
                 );
@@ -129,14 +118,17 @@ class Blog extends Component {
             />
             <Route path="/roundtrip" component={RoundTrip} />
             <Route path="/book-trip" component={Drivers} />
+            <Route path="/login" component={LoginModal} />
+            <Route path="/signup" component={SignUpModal} />
+            <Route path="/checkout" component={CheckoutForm} />
           </Switch>
         </div>
-        {showSignupModal ? (
+        {/* {showSignupModal ? (
           <SignUpModal closeModal={this.handleSignUpClick} />
         ) : null}
         {showLoginModal ? (
           <LoginModal closeModal={this.handleLoginClick} />
-        ) : null}
+        ) : null} */}
       </Fragment>
     );
   }

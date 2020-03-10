@@ -1,5 +1,5 @@
 import React, { PureComponent, Fragment } from "react";
-import { Form, Input, Modal, Button, message } from "antd";
+import { Form, Input, Modal, Card, Button, message } from "antd";
 import axios from "axios";
 import * as CONFIGS from "../../configs";
 
@@ -19,7 +19,7 @@ class Signup extends PureComponent {
             response.data &&
             response.data.message === "success"
           ) {
-            message.success('SignUp Successful');
+            message.success("SignUp Successful");
             closeModal();
           }
         })
@@ -35,13 +35,14 @@ class Signup extends PureComponent {
 
     return (
       <Fragment>
-        <Modal
+        {/* <Modal
           title="Sign Up"
           visible={true}
           closable
           onCancel={closeModal}
           footer={null}
-        >
+        > */}
+        <Card bordered={false} bodyStyle={{ padding: "5% 30%" }}>
           <Form>
             <Form.Item label="Name">
               {getFieldDecorator("name", {
@@ -78,10 +79,17 @@ class Signup extends PureComponent {
               })(<Input.Password />)}
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>Sign Up</Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                onClick={this.handleSubmit}
+              >
+                Sign Up
+              </Button>
             </Form.Item>
           </Form>
-        </Modal>
+          {/* </Modal> */}
+        </Card>
       </Fragment>
     );
   }

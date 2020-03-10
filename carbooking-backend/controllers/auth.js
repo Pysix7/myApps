@@ -41,20 +41,28 @@ exports.login = async (req, res, next) => {
       const err = new Error("Password did not match");
       err.statusCode = 401;
       throw err;
+    } else {
+      // console.log('addMinutes(new Date(), 30) :', addMinutes(new Date(), 30).toUTCString() , new Date().toUTCString());
+      const expiryTime = Date.now(addMinutes(new Date(), CONFIGS.JWT_EXPIRE));
+
+      // console.log("expiryTime :", new Date(expiryTime), Date.now(expiryTime));
+      const token = jwt.sign(
+        {
+          id: user._id,
+          email: user.email
+        },
+        CONFIGS.JWT_SECRET,
+        {
+          expiresIn: expiryTime
+        }
+      );
+
+      res.status(200).json({
+        message: "success",
+        token,
+        expiryTime: expiryTime
+      });
     }
-    // console.log('addMinutes(new Date(), 30) :', addMinutes(new Date(), 30).toUTCString() , new Date().toUTCString());
-    const expiryTime = Date.now(addMinutes(new Date(), CONFIGS.JWT_EXPIRE));
-
-    // console.log("expiryTime :", new Date(expiryTime), Date.now(expiryTime));
-    const token = jwt.sign({ user }, CONFIGS.JWT_SECRET, {
-      expiresIn: expiryTime
-    });
-
-    res.status(200).json({
-      message: "success",
-      token,
-      expiryTime: expiryTime
-    });
   } catch (err) {
     next(err);
   }

@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "webpack-dev-server --mode development",
+    "start": "webpack-dev-server",
+    "dev": "webpack-dev-server --mode development",
     "build:prod": "webpack-dev-server --mode prod",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -12,6 +13,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.8.3",
+    "@babel/runtime": "^7.8.7",
+    "@stripe/react-stripe-js": "^1.0.3",
+    "@stripe/stripe-js": "^1.0.3",
     "antd": "^3.19.3",
     "axios": "^0.19.2",
     "babel-plugin-import": "^1.13.0",
