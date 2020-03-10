@@ -37,14 +37,15 @@ class RoundTrip extends PureComponent {
   };
 
   bookTrip = e => {
+    const { cities } = this.state;
     e.preventDefault();
     this.props.form.validateFields((err, values) => {
       if (!err) {
-
         const fromDate = moment(values.fromDate).format("DD-MM-YYYY");
         const toDate = moment(values.toDate).format("DD-MM-YYYY");
         const origin = values.origin;
         const destination = values.destination;
+        const { distance } = cities.find(item => item.name === destination);
 
         const BOOKING_URI =
           "?origin=" +
@@ -54,7 +55,10 @@ class RoundTrip extends PureComponent {
           "&fromDate=" +
           fromDate +
           "&toDate=" +
-          toDate;
+          toDate +
+          "&distance=" +
+          distance;
+
         this.props.history.push("/book-trip" + BOOKING_URI);
       }
     });

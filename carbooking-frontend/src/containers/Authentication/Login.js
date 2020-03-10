@@ -1,16 +1,21 @@
 import React, { PureComponent, Fragment } from "react";
-import { Form, Input, Modal, Button, message } from "antd";
+import { Form, Input, Modal, Button } from "antd";
 import axios from "axios";
 import * as CONFIGS from "../../configs";
+import { AuthContext } from "../../contexts/AuthContext";
+import { setLSItem } from "../../utils/localStorage";
 
-class Signup extends PureComponent {
+class Login extends PureComponent {
+  static contextType = AuthContext;
+
   handleSubmit = e => {
     e.preventDefault();
     const { form, closeModal } = this.props;
+    const { toggleLoginState } = this.context;
     form.validateFields((err, values) => {
       if (err) throw err;
       axios
-        .post(CONFIGS.SRVR_URI + "/auth/signup", {
+        .post(CONFIGS.SRVR_URI + "/auth/login", {
           ...values
         })
         .then(response => {
@@ -19,8 +24,12 @@ class Signup extends PureComponent {
             response.data &&
             response.data.message === "success"
           ) {
-            message.success('SignUp Successful');
+            setLSItem("auth", {
+              token: response.data.token,
+              expiryTime: response.data.expiryTime
+            });
             closeModal();
+            toggleLoginState();
           }
         })
         .catch(err => console.log("err :", err));
@@ -36,23 +45,13 @@ class Signup extends PureComponent {
     return (
       <Fragment>
         <Modal
-          title="Sign Up"
+          title="Login"
           visible={true}
           closable
           onCancel={closeModal}
           footer={null}
         >
           <Form>
-            <Form.Item label="Name">
-              {getFieldDecorator("name", {
-                rules: [
-                  {
-                    required: true,
-                    message: "Please input your Name"
-                  }
-                ]
-              })(<Input />)}
-            </Form.Item>
             <Form.Item label="E-mail">
               {getFieldDecorator("email", {
                 rules: [
@@ -78,7 +77,13 @@ class Signup extends PureComponent {
               })(<Input.Password />)}
             </Form.Item>
             <Form.Item>
-              <Button type="primary" htmlType="submit" onClick={this.handleSubmit}>Sign Up</Button>
+              <Button
+                type="primary"
+                htmlType="submit"
+                onClick={this.handleSubmit}
+              >
+                Login
+              </Button>
             </Form.Item>
           </Form>
         </Modal>
@@ -86,4 +91,4 @@ class Signup extends PureComponent {
     );
   }
 }
-export default Form.create({ name: "signup" })(Signup);
+export default Form.create({ name: "login" })(Login);

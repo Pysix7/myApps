@@ -6,12 +6,16 @@ const citySchema = new Schema({
   name: {
     type: String,
     required: true,
-    text:true
+    text: true
   },
   state: {
     type: String,
     required: true,
-    text:true
+    text: true
+  },
+  distance: {
+    type: String,
+    required: true
   }
 });
 
