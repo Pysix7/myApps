@@ -8,7 +8,6 @@ const Driver = require("../model/drivers");
 exports.searchPlace = async (req, res, next) => {
   const searchkey = req.query.searchkey;
 
-  console.log("searchKey :", searchkey);
   let places = [];
   try {
     // const client = new Client({});

@@ -25,6 +25,14 @@ exports.signup = async (req, res, next) => {
     // const hashedPassword = await bcrypt.hash(password, saltRounds);
     // console.log('hashedPassword',hashedPassword)
 
+    const [userExists] = await User.find({ email });
+
+    if (userExists) {
+      const err = new Error("User Already exists!");
+      err.statusCode = 404;
+      throw err;
+    }
+
     const user = new User({
       ...req.body,
       password: password
@@ -58,7 +66,6 @@ exports.login = async (req, res, next) => {
     // const isEqual = await bcrypt.compare(password, user.password);
 
     const isEqual = comparePassword(password, user.password);
-    console.log('isEqual', isEqual)
     
     if (!isEqual) {
       const err = new Error("Password did not match");

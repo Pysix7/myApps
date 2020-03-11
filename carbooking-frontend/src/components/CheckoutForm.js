@@ -37,16 +37,16 @@ class CheckoutForm extends React.Component {
         }
       }
     });
-    console.log("result :", result);
     if (result.error) {
       // Show error to your customer (e.g., insufficient funds)
       message.error("Something is wrong, Please check the input and Submit.");
-      console.log(result.error.message);
     } else {
       // The payment has been processed!
       if (result.paymentIntent.status === "succeeded") {
         message.success("Booking Complete");
-        window.location.href = "/";
+        setTimeout(()=>{
+          window.location.href = "/";
+        },3000)
         // Show a success message to your customer
         // There's a risk of the customer closing the window before callback
         // execution. Set up a webhook or plugin to listen for the
