@@ -1,5 +1,23 @@
 ### Usage
 
+## Frontend
+- I Was not able to dockerize it 
+
+- clone the repo
+- inside carbooking-frontend run 
+
+#### Command
+
+    npm i
+    npm start
+
+## Backend 
+- There's `docker-compose.yml` file for backed, need to eun the command.
+
+#### Command
+
+    docker-compose up
+    
 - Use the `docker-compose.yml` file to start the app.
 
 - Sign up
@@ -13,10 +31,6 @@
 - select driver
 
 - Complete the payment, for the payment process you can use `4242424242424242` card number with any future date, cvv, and 5 digit zip.
-
-#### Command
-
-    docker-compose up
 
 #### Notes
 
