@@ -1,24 +1,29 @@
-### Usage
+## Usage
 
 ## Frontend
-- I Was not able to dockerize it 
+- unfortunately i Was not able to dockerize it
+- so we have to run it on dev server.
 
-- clone the repo
+- clone the repo 
 - inside carbooking-frontend run 
 
-#### Command
-
+#### Commands  
+    git clone https://github.com/Pysix7/myApps.git ic-frontend
+    
+    cd ic-frontend
+    
     npm i
+    
     npm start
 
 ## Backend 
-- There's `docker-compose.yml` file for backed, need to eun the command.
+- There's `docker-compose.yml` file for backed inside carbooking-backend folder , need to eun the command.
 
 #### Command
 
     docker-compose up
-    
-- Use the `docker-compose.yml` file to start the app.
+
+- Now you can use the app.
 
 - Sign up
 
