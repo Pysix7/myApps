@@ -20,4 +20,4 @@
 
 #### Notes
 
-- i was not able to use Google places api, so i stored some data manually to database, the cities data is in `cities-data.txt` file.
+- i was not able to use Google places api, so i stored some data manually to database, For Reference: the cities data is in `cities-data.txt` file.
