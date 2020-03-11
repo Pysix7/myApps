@@ -17,7 +17,7 @@ const tripRoutes = require("./routes/trip");
 
 const srvr = express();
 
-const mongoDBURI = process.env.MONGO_URI;
+const mongoDBURI = process.env.MONGO_URI || 'mongodb://localhost/instacar';
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
@@ -36,7 +36,6 @@ srvr.use((req, res, next) => {
 
   if (authorizationHeader && authorizationHeader[0] === "Bearer") {
     const validToken = jwt.verify(authorizationHeader[1], CONFIGS.JWT_SECRET);
-    console.log("validToken :", validToken);
   }
   next();
 });

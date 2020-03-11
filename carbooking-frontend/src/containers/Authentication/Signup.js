@@ -19,11 +19,14 @@ class Signup extends PureComponent {
             response.data &&
             response.data.message === "success"
           ) {
+            // closeModal();
             message.success("SignUp Successful");
-            closeModal();
+            this.props.history.push('/login');
           }
         })
-        .catch(err => console.log("err :", err));
+        .catch(err => {
+          message.error(err.response.data.message)
+        });
     });
   };
 
