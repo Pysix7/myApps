@@ -17,7 +17,7 @@
     npm start
 
 ## Backend 
-- There's `docker-compose.yml` file for backed inside carbooking-backend folder , need to eun the command.
+- There's `docker-compose.yml` file for backed inside carbooking-backend folder , need to run the command.
 
 #### Command
 
