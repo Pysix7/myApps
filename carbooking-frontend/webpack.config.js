@@ -131,11 +131,11 @@ module.exports = {
     hot: true
   },
   context: __dirname,
-  entry: "./src/index.js",
+  entry: __dirname + "/src/index.js",
   output: {
     path: path.resolve(__dirname, "dist"),
     filename: "bundle.js",
-    publicPath: ""
+    // publicPath: ""
   },
   resolve: {
     modules: ["src", "node_modules"]

@@ -1,0 +1,24 @@
+
+version: '3'
+
+services:
+  backend:
+    container_name: cb-backend
+    image: pysix/first:carbooking-backend
+    environment:
+      - NODE_ENV=production
+      - MONGO_URI=mongodb://db:27017/instacar
+    ports:
+      - 3000:3000
+    volumes:
+      - ./app:/srv/app
+    depends_on:
+      - db
+    command: 'npm start'
+
+  db:
+    container_name: mongodb
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017

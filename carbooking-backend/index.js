@@ -17,7 +17,7 @@ const tripRoutes = require("./routes/trip");
 
 const srvr = express();
 
-const mongoDBURI = "mongodb://localhost/instacar";
+const mongoDBURI = process.env.MONGO_URI;
 
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes

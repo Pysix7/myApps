@@ -1,24 +1,42 @@
 const User = require("../model/user");
-const argon = require("argon2");
+// const argon = require("argon2");
 const jwt = require("jsonwebtoken");
 const CONFIGS = require("../configs");
+// const bcrypt = require('bcrypt');
+// const saltRounds = 10;
 
 function addMinutes(date, minutes) {
   return new Date(date.getTime() + minutes * 60000);
 }
 
+const comparePassword =(pw, pwInDb) =>{
+  if(pw && pwInDb && pw.toString() === pwInDb.toString()){
+    return true
+  }else{
+    return false
+  }
+}
+
 exports.signup = async (req, res, next) => {
   const { email, name, password } = req.body;
   try {
-    const hashedPassword = await argon.hash(password);
+    // const hashedPassword = await argon.hash(password);
+
+    // const hashedPassword = await bcrypt.hash(password, saltRounds);
+    // console.log('hashedPassword',hashedPassword)
+
     const user = new User({
       ...req.body,
-      password: hashedPassword
+      password: password
     });
+
     user.save();
     res.status(200).json({
       message: "success",
-      user
+      user:{
+        id:user._id,
+        email: user.email
+      }
     });
   } catch (err) {
     next(err);
@@ -36,7 +54,12 @@ exports.login = async (req, res, next) => {
       throw err;
     }
 
-    const isEqual = await argon.verify(user.password, password);
+    // const isEqual = await argon.verify(user.password, password);
+    // const isEqual = await bcrypt.compare(password, user.password);
+
+    const isEqual = comparePassword(password, user.password);
+    console.log('isEqual', isEqual)
+    
     if (!isEqual) {
       const err = new Error("Password did not match");
       err.statusCode = 401;
