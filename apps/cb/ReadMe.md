@@ -1,9 +1,6 @@
 ## Usage
 
 ## Frontend
-- unfortunately i Was not able to dockerize it
-- so we have to run it on dev server.
-
 - clone the repo 
 - inside carbooking-frontend run 
 
