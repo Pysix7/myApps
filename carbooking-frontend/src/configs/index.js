@@ -1,1 +1,0 @@
-export const SRVR_URI = 'http://localhost:3000';
