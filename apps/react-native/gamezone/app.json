@@ -1,8 +1,7 @@
 {
   "expo": {
-    "name": "todo-app",
-    "slug": "todo-app",
-    "sdkVersion":"36.0.0",
+    "name": "gamezone",
+    "slug": "gamezone",
     "platforms": [
       "ios",
       "android",
