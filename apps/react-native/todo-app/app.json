@@ -2,7 +2,6 @@
   "expo": {
     "name": "todo-app",
     "slug": "todo-app",
-    "sdkVersion":"36.0.0",
     "platforms": [
       "ios",
       "android",
