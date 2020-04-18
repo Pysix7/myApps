@@ -1,19 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import { AppLoading } from 'expo';
+import { useFonts } from '@use-expo/font';
+import Navigator from './routes/drawer';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-    </View>
-  );
-}
+  const [fontsLoaded] = useFonts({
+    'cyberpunk': require('./assets/fonts/Cyberpunk.ttf'),
+  });
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  if (fontsLoaded) {
+    return (
+      <Navigator />
+    );
+  } else {
+    return (
+      <AppLoading />
+    )
+  }
+};

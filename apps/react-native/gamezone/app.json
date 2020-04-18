@@ -2,6 +2,7 @@
   "expo": {
     "name": "gamezone",
     "slug": "gamezone",
+    "sdkVersion": "36.0.0",
     "platforms": [
       "ios",
       "android",
@@ -23,6 +24,10 @@
     ],
     "ios": {
       "supportsTablet": true
+    },
+    "android": {
+      "package": "com.pysix.gamezone",
+      "versionCode": 1
     }
   }
 }
