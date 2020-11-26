@@ -1,20 +1,90 @@
-import styles from '../styles/Home.module.css'
+import React, { PureComponent } from 'react'
+import { Card, Row, Col, Typography } from 'antd';
+import io from 'socket.io-client';
+import MessageInput from '../components/MessageInput';
+import MessageList from '../components/MessageList';
+import ContactsList from '../components/ContactsList';
 
-export default function Home() {
-  return (
-    <div className={styles.container}>
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-            Hello world! this is pysix.
-        </h1>
+import '../styles/index.less';
 
-        <div className={styles.grid}>
-          <a href="https://pysix7.github.io/me/" className={styles.card}>
-            <h3>Porfolio &rarr;</h3>
-            <p>find more about me here</p>
-          </a>
-        </div>
-      </main>
-    </div>
-  )
+const { Title, Text } = Typography;
+
+export default class index extends PureComponent {
+  state = {
+    messages: []
+  }
+
+  socket = React.createRef();
+
+  componentDidMount() {
+    this.socket = io(process.env.NEXT_PUBLIC_CHAT_SERVER_API);
+
+    if (this.socket !== null) {
+      this.socket.on('connect', () => {
+        console.log('connected to chat server');
+      });
+
+      this.scrollToLatestMsg();
+
+      this.socket.on('chat-message', (message) => {
+        const { body, senderId } = message;
+        this.setState((prevState) => {
+          const msgs = [
+            ...prevState.messages,
+            {
+              key: `${senderId}-${body}`,
+              msg: body,
+              user: senderId
+            }
+          ]
+          return {
+            messages: msgs
+          };
+        }, () => this.scrollToLatestMsg());
+      });
+    }
+  }
+
+  scrollToLatestMsg = () => {
+    const msgListDiv = document.getElementById("MSGSLIST");
+    msgListDiv.scrollTop = msgListDiv.scrollHeight;
+  }
+
+  handleSendMessage = (values, formRef) => {
+    if (this.socket !== null) {
+      this.socket.emit('chat-message', {
+        body: values.message,
+        senderId: this.socket.id,
+      });
+      formRef.resetFields();
+    }
+  }
+
+  render() {
+    const { messages } = this.state;
+    return (
+      <div className="pageContainer">
+        <Card>
+          <Row className="chatContainer">
+            <Col xs={12} sm={12} md={10} lg={8} xl={8}>
+              <Row>
+                <Title>React Chat App</Title>
+              </Row>
+              <ContactsList />
+            </Col>
+            <Col xs={12} sm={12} md={14} lg={16} xl={16} className="chatBox">
+              <Row className="contactInfo">
+                <Col>
+                  <Text>Contact Name</Text>
+                </Col>
+              </Row>
+              <MessageList messages={messages} socketId={this.socket.id} />
+              <MessageInput handleSendMessage={this.handleSendMessage} />
+            </Col>
+          </Row>
+        </Card>
+      </div>
+    )
+  }
 }
+
