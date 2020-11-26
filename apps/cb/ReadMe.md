@@ -1,5 +1,8 @@
 ## Usage
 
+# Deployed URL
+https://carbooking1.herokuapp.com/
+
 ## Frontend
 - clone the repo 
 - inside carbooking-frontend run 
