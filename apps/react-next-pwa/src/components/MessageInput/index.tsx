@@ -1,7 +1,12 @@
-import React from 'react'
+import React from 'react';
 import { Button, Row, Col, Form, Input } from 'antd';
+import { IMessageFormValues } from '~/interfaces/props';
 
-export default function messageInput(props) {
+interface IProps {
+    handleSendMessage: (values: IMessageFormValues, formRef: any) => void;
+}
+
+export default function messageInput(props: IProps) {
     const { handleSendMessage } = props;
     const [formRef] = Form.useForm();
 

@@ -1,7 +1,10 @@
-import Head from 'next/head'
+import React from 'react';
+import { AppProps } from 'next/app';
+import Head from 'next/head';
+
 import '../styles/global.less';
 
-export default function MyApp({ Component, pageProps }) {
+export default function MyApp({ Component, pageProps }: AppProps) {
   return (
     <>
       <Head>
@@ -28,7 +31,7 @@ export default function MyApp({ Component, pageProps }) {
           type="image/png"
           sizes="32x32"
         />
-        <meta name="theme-color" content="#317EFB" />
+        <meta name="theme-color" content="#6495ed" />
       </Head>
       <Component {...pageProps} />
     </>
