@@ -1,23 +1,33 @@
 import React, { PureComponent } from 'react'
 import { Card, Row, Col, Typography } from 'antd';
 import io from 'socket.io-client';
-import MessageInput from '../components/MessageInput';
-import MessageList from '../components/MessageList';
-import ContactsList from '../components/ContactsList';
+import MessageInput from '~/components/MessageInput';
+import MessageList from '~/components/MessageList';
+import ContactsList from '~/components/ContactsList';
+import { IMessageFormValues, IMessage } from '~/interfaces/props';
 
-import '../styles/index.less';
+import '~/styles/index.less';
 
 const { Title, Text } = Typography;
 
-export default class index extends PureComponent {
+interface IMessageType {
+  body: string;
+  senderId: string;
+}
+
+interface IState {
+  messages: IMessage[]
+}
+
+export default class index extends PureComponent<{}, IState> {
   state = {
     messages: []
   }
 
-  socket = React.createRef();
+  socket: any = React.createRef();
 
   componentDidMount() {
-    this.socket = io(process.env.NEXT_PUBLIC_CHAT_SERVER_API);
+    this.socket = io(process.env.NEXT_PUBLIC_CHAT_SERVER_API || '');
 
     if (this.socket !== null) {
       this.socket.on('connect', () => {
@@ -26,7 +36,7 @@ export default class index extends PureComponent {
 
       this.scrollToLatestMsg();
 
-      this.socket.on('chat-message', (message) => {
+      this.socket.on('chat-message', (message: IMessageType) => {
         const { body, senderId } = message;
         this.setState((prevState) => {
           const msgs = [
@@ -47,10 +57,10 @@ export default class index extends PureComponent {
 
   scrollToLatestMsg = () => {
     const msgListDiv = document.getElementById("MSGSLIST");
-    msgListDiv.scrollTop = msgListDiv.scrollHeight;
+    if (msgListDiv) msgListDiv.scrollTop = msgListDiv.scrollHeight;
   }
 
-  handleSendMessage = (values, formRef) => {
+  handleSendMessage = (values: IMessageFormValues, formRef: any) => {
     if (this.socket !== null) {
       this.socket.emit('chat-message', {
         body: values.message,

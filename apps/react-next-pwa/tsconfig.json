@@ -1,0 +1,38 @@
+{
+    "compilerOptions": {
+      "target": "esnext",
+      "module": "esnext",
+      "moduleResolution": "node",
+      "lib": ["dom", "esnext"],
+      "sourceMap": true,
+      "skipLibCheck": true,
+      "allowSyntheticDefaultImports": true,
+      "forceConsistentCasingInFileNames": true,
+      "esModuleInterop": true,
+      "resolveJsonModule": true,
+      "isolatedModules": true,
+      "jsx": "preserve",
+      "noEmit": true,
+      "noUnusedLocals": true,
+      "noUnusedParameters": true,
+      "noImplicitReturns": true,
+      "removeComments": true,
+      "allowJs": true,
+      "strict": true,
+      "baseUrl": "./src",
+      "paths": {
+        "~/*": ["*"],
+        "~/components/*": ["components/*"],
+        "~/styles/*": ["styles/*"],
+        "~/layouts/*": ["layouts/*"],
+        // "~/store/*": ["store/*"],
+        // "~/utils/*": ["utils/*"],
+        // "~/services/*": ["services/*"],
+        // "~/configs/*": ["configs/*"],
+        // "~/interfaces/*": ["interfaces/*"]
+      }
+    },
+    "exclude": ["node_modules", ".next"],
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "src/**/*"]
+  }
+  
