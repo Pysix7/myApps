@@ -1,10 +1,12 @@
 import React, { PureComponent } from 'react'
 import { Card, Row, Col, Typography } from 'antd';
 import io from 'socket.io-client';
+import Router from 'next/router';
 import MessageInput from '~/components/MessageInput';
 import MessageList from '~/components/MessageList';
 import ContactsList from '~/components/ContactsList';
 import { IMessageFormValues, IMessage } from '~/interfaces/props';
+import { getCurrentUser } from '~/services/apiMethods';
 
 import '~/styles/index.less';
 
@@ -16,42 +18,59 @@ interface IMessageType {
 }
 
 interface IState {
-  messages: IMessage[]
+  messages: IMessage[];
+  currentUser: any;
 }
 
 export default class index extends PureComponent<{}, IState> {
   state = {
-    messages: []
+    messages: [],
+    currentUser: {
+      username: ''
+    }
   }
 
   socket: any = React.createRef();
 
-  componentDidMount() {
-    this.socket = io(process.env.NEXT_PUBLIC_CHAT_SERVER_API || '');
-
-    if (this.socket !== null) {
-      this.socket.on('connect', () => {
-        console.log('connected to chat server');
+  async componentDidMount() {
+    const userResponse = await getCurrentUser();
+    if (userResponse && userResponse.status === 'ok') {
+      this.setState({
+        currentUser: {
+          ...userResponse.data
+        }
       });
 
-      this.scrollToLatestMsg();
+      console.log('userResponse :>> ', userResponse);
 
-      this.socket.on('chat-message', (message: IMessageType) => {
-        const { body, senderId } = message;
-        this.setState((prevState) => {
-          const msgs = [
-            ...prevState.messages,
-            {
-              key: `${senderId}-${body}`,
-              msg: body,
-              user: senderId
-            }
-          ]
-          return {
-            messages: msgs
-          };
-        }, () => this.scrollToLatestMsg());
-      });
+      this.socket = io(process.env.NEXT_PUBLIC_CHAT_SERVER_API || '');
+
+      if (this.socket !== null) {
+        this.socket.on('connect', () => {
+          console.log('connected to chat server');
+        });
+
+        this.scrollToLatestMsg();
+
+        this.socket.on('chat-message', (message: IMessageType) => {
+          const { body, senderId } = message;
+          this.setState((prevState) => {
+            const msgs = [
+              ...prevState.messages,
+              {
+                key: `${senderId}-${body}`,
+                msg: body,
+                user: senderId
+              }
+            ]
+            return {
+              messages: msgs
+            };
+          }, () => this.scrollToLatestMsg());
+        });
+      }
+    } else {
+      Router.replace('/auth/login');
     }
   }
 
@@ -71,7 +90,9 @@ export default class index extends PureComponent<{}, IState> {
   }
 
   render() {
-    const { messages } = this.state;
+    const { messages, currentUser } = this.state;
+    const loggedInUser: any = `${currentUser.username}`;
+
     return (
       <div className="pageContainer">
         <Card>
@@ -80,6 +101,7 @@ export default class index extends PureComponent<{}, IState> {
               <Row>
                 <Title>React Chat App</Title>
               </Row>
+              <Row><Title level={3}>{loggedInUser}</Title></Row>
               <ContactsList />
             </Col>
             <Col xs={12} sm={12} md={14} lg={16} xl={16} className="chatBox">
