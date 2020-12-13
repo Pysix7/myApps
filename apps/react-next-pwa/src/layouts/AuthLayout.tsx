@@ -1,5 +1,6 @@
 import React from 'react'
 import { Row, Col, Typography, Card } from 'antd';
+import Router from 'next/router';
 
 const { Title } = Typography;
 
@@ -8,7 +9,12 @@ const AuthLayout = ({ title, children }: { title: string, children: React.ReactN
         <Card bodyStyle={{ padding: '50px 24px 24px 24px' }}>
             <Row>
                 <Col span={6}>
-                    <Row><Title>React Chat App</Title></Row>
+                    <Row
+                        onClick={() => Router.push('/')}
+                        style={{ cursor: 'pointer' }}
+                    >
+                        <Title>React Chat App</Title>
+                    </Row>
                     <Row><Title level={3}>{title}</Title></Row>
                 </Col>
                 <Col span={18}>{children}</Col>

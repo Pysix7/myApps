@@ -5,3 +5,14 @@ export interface IMessage {
     msg: string;
     user: string;
 }
+
+export interface ILoginFormValues {
+    username: string;
+    password: string;
+};
+
+export interface ISignupFormValues {
+    username: string;
+    password: string;
+    email: string;
+}
