@@ -1,4 +1,10 @@
-### Apps links:
+# Carbooking app
+## features
+* user authentication (login, signup).
+* roundtrip.
+* dummy stripe integration for booking confirmation.
+
+**Apps links:**
 * Carbooking - https://carbooking1.herokuapp.com/
 
 # Chat app (MERN based)
