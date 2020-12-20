@@ -2,13 +2,15 @@ import React from 'react'
 import { Row, Col, Typography, Card } from 'antd';
 import Router from 'next/router';
 
+import './AuthLayout.less';
+
 const { Title } = Typography;
 
 const AuthLayout = ({ title, children }: { title: string, children: React.ReactNode }) => {
     return (
-        <Card bodyStyle={{ padding: '50px 24px 24px 24px' }}>
+        <Card className="layout" >
             <Row>
-                <Col span={6}>
+                <Col xs={24} sm={24} md={12} lg={6} xl={6}>
                     <Row
                         onClick={() => Router.push('/')}
                         style={{ cursor: 'pointer' }}
@@ -17,7 +19,7 @@ const AuthLayout = ({ title, children }: { title: string, children: React.ReactN
                     </Row>
                     <Row><Title level={3}>{title}</Title></Row>
                 </Col>
-                <Col span={18}>{children}</Col>
+                <Col xs={24} sm={24} md={12} lg={18} xl={18}>{children}</Col>
             </Row>
         </Card>
     )

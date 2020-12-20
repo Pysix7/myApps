@@ -1,6 +1,6 @@
 {
   "name": "react-next-pwa",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "a Chat App developed with react, nextjs and socket.io",
   "scripts": {
     "dev": "next dev -p 2222",

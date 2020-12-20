@@ -81,13 +81,12 @@ exports.currentUser = async (req, res, next) => {
   try {
     if (req.tokenData) {
       const { username } = req.tokenData;
-      const [user] = await User.find({ username });
+      const user = await User.findOne({ username }).select('username email');
       if (!user) {
         const err = new Error("User Not Found!");
         err.statusCode = 404;
         throw err;
       }
-      delete user.password;
 
       res.status(200).json({
         username: user.username,

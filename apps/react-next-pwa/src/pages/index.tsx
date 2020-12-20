@@ -1,33 +1,34 @@
 import React, { PureComponent } from 'react'
 import { Card, Row, Col, Typography } from 'antd';
-import io from 'socket.io-client';
+import { LogoutOutlined } from '@ant-design/icons';
 import Router from 'next/router';
-import MessageInput from '~/components/MessageInput';
-import MessageList from '~/components/MessageList';
+import ChatBox from '~/components/ChatBox';
 import ContactsList from '~/components/ContactsList';
-import { IMessageFormValues, IMessage } from '~/interfaces/props';
-import { getCurrentUser } from '~/services/apiMethods';
+import { IMessage } from '~/interfaces/props';
+import { getCurrentUser, logout } from '~/services/apiMethods';
+import { IUser } from '~/interfaces/props';
 
 import '~/styles/index.less';
 
-const { Title, Text } = Typography;
-
-interface IMessageType {
-  body: string;
-  senderId: string;
-}
+const { Title } = Typography;
 
 interface IState {
   messages: IMessage[];
-  currentUser: any;
+  currentUser: IUser;
+  chatUser: string | null;
+  isLoggedIn: boolean;
 }
 
 export default class index extends PureComponent<{}, IState> {
   state = {
     messages: [],
     currentUser: {
-      username: ''
-    }
+      username: '',
+      email: '',
+      id: ''
+    },
+    chatUser: null,
+    isLoggedIn: false
   }
 
   socket: any = React.createRef();
@@ -38,59 +39,22 @@ export default class index extends PureComponent<{}, IState> {
       this.setState({
         currentUser: {
           ...userResponse.data
-        }
+        },
+        isLoggedIn: true
       });
-
-      console.log('userResponse :>> ', userResponse);
-
-      this.socket = io(process.env.NEXT_PUBLIC_CHAT_SERVER_API || '');
-
-      if (this.socket !== null) {
-        this.socket.on('connect', () => {
-          console.log('connected to chat server');
-        });
-
-        this.scrollToLatestMsg();
-
-        this.socket.on('chat-message', (message: IMessageType) => {
-          const { body, senderId } = message;
-          this.setState((prevState) => {
-            const msgs = [
-              ...prevState.messages,
-              {
-                key: `${senderId}-${body}`,
-                msg: body,
-                user: senderId
-              }
-            ]
-            return {
-              messages: msgs
-            };
-          }, () => this.scrollToLatestMsg());
-        });
-      }
     } else {
       Router.replace('/auth/login');
     }
   }
 
-  scrollToLatestMsg = () => {
-    const msgListDiv = document.getElementById("MSGSLIST");
-    if (msgListDiv) msgListDiv.scrollTop = msgListDiv.scrollHeight;
-  }
-
-  handleSendMessage = (values: IMessageFormValues, formRef: any) => {
-    if (this.socket !== null) {
-      this.socket.emit('chat-message', {
-        body: values.message,
-        senderId: this.socket.id,
-      });
-      formRef.resetFields();
-    }
+  onListUserClickHandler = (userId: string) => {
+    this.setState({
+      chatUser: userId
+    });
   }
 
   render() {
-    const { messages, currentUser } = this.state;
+    const { chatUser, currentUser, isLoggedIn } = this.state;
     const loggedInUser: any = `${currentUser.username}`;
 
     return (
@@ -98,21 +62,27 @@ export default class index extends PureComponent<{}, IState> {
         <Card>
           <Row className="chatContainer">
             <Col xs={12} sm={12} md={10} lg={8} xl={8}>
-              <Row>
+              <Row className="appName">
                 <Title>React Chat App</Title>
               </Row>
-              <Row><Title level={3}>{loggedInUser}</Title></Row>
-              <ContactsList />
-            </Col>
-            <Col xs={12} sm={12} md={14} lg={16} xl={16} className="chatBox">
-              <Row className="contactInfo">
-                <Col>
-                  <Text>Contact Name</Text>
+              <Row className="loggedInUser">
+                <Col span={24} >
+                  <Title level={2}>Logged in User:
+                    <span className="lnUsername">{loggedInUser}</span>
+                    <LogoutOutlined
+                      onClick={() => logout()}
+                      className="logoutIcon"
+                      title="logout"
+                    />
+                  </Title>
                 </Col>
               </Row>
-              <MessageList messages={messages} socketId={this.socket.id} />
-              <MessageInput handleSendMessage={this.handleSendMessage} />
+              <ContactsList
+                onListUserClickHandler={this.onListUserClickHandler}
+                currentUser={currentUser}
+              />
             </Col>
+            <ChatBox chatUser={chatUser} currentUser={currentUser} isLoggedIn={isLoggedIn} />
           </Row>
         </Card>
       </div>
