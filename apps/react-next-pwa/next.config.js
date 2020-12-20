@@ -54,15 +54,15 @@ const nextConfiguration = {
 };
 
 module.exports = withPlugins([
-  // [
-  //   withPWA, {
-  //     pwa: {
-  //       disable: process.env.NODE_ENV === 'development',
-  //       dest: 'public',
-  //       runtimeCaching,
-  //     },
-  //   }
-  // ],
+  [
+    withPWA, {
+      pwa: {
+        disable: process.env.NODE_ENV === 'development',
+        dest: 'public',
+        runtimeCaching,
+      },
+    }
+  ],
   [
     withLess, {
       lessLoaderOptions: {

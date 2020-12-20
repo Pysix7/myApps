@@ -1,6 +1,6 @@
 {
   "name": "chat-server",
-  "version": "1.0.0",
+  "version": "2.0.0",
   "description": "a node,express server for chat app",
   "main": "index.js",
   "scripts": {
@@ -18,7 +18,8 @@
     "express-rate-limit": "5.2.3",
     "jsonwebtoken": "8.5.1",
     "mongoose": "5.10.14",
-    "socket.io": "3.0.3"
+    "socket.io": "3.0.3",
+    "uuid": "8.3.2"
   },
   "devDependencies": {
     "nodemon": "2.0.2"

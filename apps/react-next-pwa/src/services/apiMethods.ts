@@ -86,7 +86,7 @@ export const signupMethod = async (payload: ISignupFormValues) => {
 export const getCurrentUser = async () => {
     const lsKey = process.env.NEXT_PUBLIC_AUTH_KEY || 'token';
     const authToken = window.localStorage.getItem(lsKey);
-    const currentUserUrl = process.env.NEXT_PUBLIC_CHAT_SERVER_API + '/auth/user/me' || '';
+    const currentUserUrl = process.env.NEXT_PUBLIC_CHAT_SERVER_API + '/auth/users/me' || '';
 
     if (authToken) {
         try {
@@ -117,4 +117,80 @@ export const getCurrentUser = async () => {
         }
     }
     return null;
+}
+
+export const getAllUsers = async () => {
+    const lsKey = process.env.NEXT_PUBLIC_AUTH_KEY || 'token';
+    const authToken = window.localStorage.getItem(lsKey);
+    const fetchAllUsersURL = process.env.NEXT_PUBLIC_CHAT_SERVER_API + '/users' || '';
+
+    if (authToken) {
+        try {
+            const resp = await fetch(fetchAllUsersURL, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+
+            if (resp) {
+                const respData = await resp.json();
+
+                if (resp && resp.status === 200 && resp.ok) {
+                    return {
+                        status: 'ok',
+                        data: [...respData]
+                    }
+                }
+                return null;
+            }
+            return null;
+
+        } catch (error) {
+            console.log('error :>> ', error);
+        }
+    }
+    return null;
+}
+
+export const getUser = async ({ userId }: { userId: string }) => {
+    const lsKey = process.env.NEXT_PUBLIC_AUTH_KEY || 'token';
+    const authToken = window.localStorage.getItem(lsKey);
+    const fetchAllUsersURL = process.env.NEXT_PUBLIC_CHAT_SERVER_API + '/users' + `/${userId}` || '';
+
+    if (authToken) {
+        try {
+            const resp = await fetch(fetchAllUsersURL, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${authToken}`
+                }
+            });
+
+            if (resp) {
+                const respData = await resp.json();
+
+                if (resp && resp.status === 200 && resp.ok) {
+                    return {
+                        status: 'ok',
+                        data: {
+                            ...respData
+                        }
+                    }
+                }
+                return null;
+            }
+            return null;
+
+        } catch (error) {
+            console.log('error :>> ', error);
+        }
+    }
+    return null;
+}
+
+export const logout = () => {
+    const lsKey = process.env.NEXT_PUBLIC_AUTH_KEY || 'token';
+    window.localStorage.removeItem(lsKey);
+    location.reload();
 }

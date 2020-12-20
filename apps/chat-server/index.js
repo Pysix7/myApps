@@ -3,13 +3,17 @@ const rateLimit = require("express-rate-limit");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require('uuid');
 
+// routes
 const authRoutes = require('./routes/auth');
+const usersRoutes = require('./routes/users');
+
+const Chat = require("./model/chat");
 const CONFIGS = require("./configs");
 
 const srvr = express();
 const http = require('http').createServer(srvr);
-
 const io = require('socket.io')(http, {
     cors: {
         origin: "*",
@@ -67,30 +71,83 @@ srvr.use((req, res, next) => {
 
 // auth routes
 srvr.use("/auth", authRoutes);
+// data routes
+srvr.use("/users", usersRoutes);
 
-// socket io connection event handler
-io.on('connection', (socket) => {
-    console.log('a user connected');
+// socket.io chat handler
+(() => {
+    try {
+        // socket io connection event handler
+        io.on('connection', async (socket) => {
+            const { participants } = socket.handshake.query;
+            /**
+             * if participants exists are passed as query when connecting to socket
+             * use the participants and create / use existing room & join to it
+             */
 
-    io.emit('chat-message', {
-        body: 'user connected -> ' + socket.id,
-        senderId: socket.id
-    });
+            if (participants) {
+                const partcpts = JSON.parse(participants);
 
-    // disconnect event handler
-    socket.on('disconnect', () => {
-        console.log('user disconnected');
-        io.emit('chat-message', {
-            body: 'user disconnected -> ' + socket.id,
-            senderId: socket.id
+                // checking if the room exists for the participants
+                const [chatRoomExists] = await Chat.find().all('participants', partcpts).select('roomId participants');
+
+                let roomId = uuidv4();
+                // if room doesn;t exists create new roomId and join a room
+                if (!chatRoomExists) {
+                    const chatRoom = new Chat({
+                        roomId,
+                        participants: partcpts
+                    });
+
+                    // save the chat room history
+                    chatRoom.save();
+                } else {
+                    // if room already exists use the roomId and join a room
+                    roomId = chatRoomExists.roomId;
+                }
+                // join room 
+                socket.join(roomId);
+                console.log('a user connected to room =>>', roomId);
+
+                // // new events specific to room
+
+                /* io.to(roomId).emit('chat-message', {
+                    body: 'user connected -> ' + socket.id,
+                    senderId: socket.id
+                }); */
+
+                // chat-message event handler
+                socket.on('chat-message', (msg) => {
+                    io.to(roomId).emit('chat-message', msg);
+                });
+            } else {
+                /**
+                 * else all connections will join and communicate in global channel
+                 */
+                io.emit('chat-message', {
+                    body: 'user connected -> ' + socket.id,
+                    senderId: socket.id
+                });
+
+                // disconnect event handler
+                socket.on('disconnect', () => {
+                    console.log('user disconnected');
+                    io.emit('chat-message', {
+                        body: 'user disconnected -> ' + socket.id,
+                        senderId: socket.id
+                    });
+                });
+
+                // chat-message event handler
+                socket.on('chat-message', (msg) => {
+                    io.emit('chat-message', msg);
+                });
+            }
         });
-    });
-
-    // chat-message event handler
-    socket.on('chat-message', (msg) => {
-        io.emit('chat-message', msg);
-    });
-});
+    } catch (err) {
+        console.log('err', err)
+    }
+})()
 
 // global error handler
 srvr.use((error, req, res, next) => {
@@ -101,12 +158,11 @@ srvr.use((error, req, res, next) => {
     res.status(status).json({ message: message, data: data });
 });
 
-// http.listen(CONFIGS.PORT, () =>
-//     console.log(`listening on port :: >> ${CONFIGS.PORT}`)
-// );
-
-// connecting to mongodb with mongoose ODM.
-// once connection is established we start the server.
+/*
+ *connecting to mongodb with mongoose ODM. 
+ * once connection is established we start the server. 
+ * 
+*/
 
 mongoose
     .connect(CONFIGS.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })

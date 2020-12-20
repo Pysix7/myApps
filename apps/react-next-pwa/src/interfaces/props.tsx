@@ -16,3 +16,9 @@ export interface ISignupFormValues {
     password: string;
     email: string;
 }
+
+export interface IUser {
+    username: string;
+    email: string;
+    id: string;
+}
