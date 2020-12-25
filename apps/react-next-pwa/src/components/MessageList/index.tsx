@@ -7,10 +7,11 @@ const { Text } = Typography;
 interface IProps {
     messages: IMessage[];
     socketId: string;
+    chatType: "user" | "global";
 }
 
 export default function messagesList(props: IProps) {
-    const { messages, socketId } = props;
+    const { messages, socketId, chatType } = props;
     return (
         <Row className="messagesList" id="MSGSLIST">
             <Col span={24}>
@@ -22,6 +23,12 @@ export default function messagesList(props: IProps) {
                                 <div className={`msgDiv ${msgDivClassName}`}>
                                     <Text>{item.msg}</Text>
                                 </div>
+                                {chatType === "global" &&
+                                    item.user !== socketId && (
+                                        <div className="sender">
+                                            <Text>{item.user}</Text>
+                                        </div>
+                                    )}
                             </div>
                         </Row>
                     )
