@@ -9,6 +9,7 @@
 
 # Chat app (MERN based)
 ## features
+* React PWA (Progessive Web application)
 * user authentication (login, signup)
 * multi user chat (by creating and joining rooms)
 * chat model - to create and maintain `roomid` and `participants` 

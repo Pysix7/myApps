@@ -14,4 +14,92 @@
 
     --primary-color: aquamarine;
     --secondary-color: coral;
+
+    .headings {
+        .ant-typography {
+            color: cornflowerblue;
+        } 
+    }
+        .chatBox {
+        .contactInfo {
+            height: 8%;
+            background-color: aliceblue;
+            align-items: center;
+            & > div {
+                margin-left: 20px;
+                font-size: 20px;
+                font-weight: bold;
+                font-style: italic;
+            } 
+
+            .ant-typography {
+                color: var(--secondary-color);
+            }
+        }
+
+        .messagesList {
+            height: 82%;
+            overflow-y: scroll;
+            overflow-x: auto;
+
+            .messageContainer {
+                & > div {
+                    width: 100%;
+                    padding: 5px 10px;
+                }
+
+                .msgDiv {
+                    padding: 5px 10px;
+                    border-radius: 5px;
+                }
+                
+                .myMsg {
+                    background-color: var(--primary-color);
+                    float: right;
+                }
+
+                .recievedMsg {
+                    background-color:  var(--secondary-color);
+                    float:  left;
+                }
+
+                .sender {
+                    display: inline-block;
+                    margin: 0px 10px;
+                    padding: 4px 5px;
+                    border-radius: 5px;
+                    border: 1px solid var(--secondary-color);
+                    &  > span {
+                        color: lightslategrey;
+                    }
+                }
+            }
+        }
+
+        .messageInput {
+            height: 10%;
+            .ant-form.ant-form-horizontal {
+                width: 100%;
+                & > div {
+                    height: 100%;
+                    .ant-row.ant-form-item,
+                    .ant-form-item-control-input,
+                    .ant-form-item-control-input-content,
+                    .ant-input {
+                        height: 100%;
+                    }
+
+                    .ant-input {
+                        border: 0px;
+                        border-top: 2px dashed #d9d9d9;
+                    }
+
+                    .ant-btn.ant-btn-primary {
+                        height: 100%;
+                        width: 100%;
+                    }
+                }
+            }
+        }
+    }
 }

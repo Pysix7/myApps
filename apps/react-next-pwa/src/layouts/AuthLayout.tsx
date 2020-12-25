@@ -18,6 +18,12 @@ const AuthLayout = ({ title, children }: { title: string, children: React.ReactN
                         <Title>React Chat App</Title>
                     </Row>
                     <Row><Title level={3}>{title}</Title></Row>
+                    <Row
+                        onClick={() => Router.push('/global-chat')}
+                        style={{ cursor: 'pointer' }}
+                    >
+                        <Title level={3}>Global Chat</Title>
+                    </Row>
                 </Col>
                 <Col xs={24} sm={24} md={12} lg={18} xl={18}>{children}</Col>
             </Row>

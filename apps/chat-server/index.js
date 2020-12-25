@@ -79,7 +79,7 @@ srvr.use("/users", usersRoutes);
     try {
         // socket io connection event handler
         io.on('connection', async (socket) => {
-            const { participants } = socket.handshake.query;
+            const { participants, username } = socket.handshake.query;
             /**
              * if participants exists are passed as query when connecting to socket
              * use the participants and create / use existing room & join to it
@@ -124,17 +124,17 @@ srvr.use("/users", usersRoutes);
                 /**
                  * else all connections will join and communicate in global channel
                  */
+                const userName = username || socket.id;
                 io.emit('chat-message', {
-                    body: 'user connected -> ' + socket.id,
-                    senderId: socket.id
+                    body: 'user joined -> ' + userName,
+                    senderId: userName
                 });
 
                 // disconnect event handler
                 socket.on('disconnect', () => {
-                    console.log('user disconnected');
                     io.emit('chat-message', {
-                        body: 'user disconnected -> ' + socket.id,
-                        senderId: socket.id
+                        body: 'user left -> ' + userName,
+                        senderId: userName
                     });
                 });
 

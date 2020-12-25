@@ -6,7 +6,7 @@ import MessageList from '~/components/MessageList';
 import { IMessageFormValues, IMessage, IUser } from '~/interfaces/props';
 import { getUser } from '~/services/apiMethods';
 
-import './index.less';
+// import './index.less';
 
 const { Text } = Typography;
 
@@ -104,7 +104,7 @@ export default function chatBox(props: IProps) {
                             <Text>{chatUserData && chatUserData.username && chatUserData.username}</Text>
                         </Col>
                     </Row>
-                    <MessageList messages={chatMessages} socketId={socketId} />
+                    <MessageList messages={chatMessages} socketId={socketId} chatType="user" />
                     <MessageInput handleSendMessage={handleSendMessage} />
                 </Fragment>
             ) : null}
