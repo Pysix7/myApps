@@ -1,6 +1,7 @@
 import React from 'react'
 import { Row, Col, Typography, Card } from 'antd';
 import Router from 'next/router';
+import { GlobalOutlined } from '@ant-design/icons';
 
 import './AuthLayout.less';
 
@@ -22,7 +23,8 @@ const AuthLayout = ({ title, children }: { title: string, children: React.ReactN
                         onClick={() => Router.push('/global-chat')}
                         style={{ cursor: 'pointer' }}
                     >
-                        <Title level={3}>Global Chat</Title>
+                        <GlobalOutlined className="globalChatIcon" />
+                        <Title level={3} className="globalChatTxt"> Global Chat</Title>
                     </Row>
                 </Col>
                 <Col xs={24} sm={24} md={12} lg={18} xl={18}>{children}</Col>

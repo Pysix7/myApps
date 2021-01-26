@@ -1,4 +1,4 @@
-# Carbooking app
+# Carbooking app (MERN based)
 ## features
 * user authentication (login, signup).
 * roundtrip.

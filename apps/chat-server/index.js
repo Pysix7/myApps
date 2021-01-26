@@ -120,7 +120,7 @@ srvr.use("/users", usersRoutes);
                 socket.on('chat-message', (msg) => {
                     io.to(roomId).emit('chat-message', msg);
                 });
-            } else {
+            } else if (username) {
                 /**
                  * else all connections will join and communicate in global channel
                  */
