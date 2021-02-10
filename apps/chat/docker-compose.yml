@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  client:
+    container_name: chat_client
+    image: pysix/chat-client
+    environment:
+      - NEXT_PUBLIC_CHAT_SERVER_API=http://localhost:3333
+    ports:
+      - 3000:3000
+    depends_on: 
+      - server
+    command: npm start
+
+  server:
+    container_name: chat_server
+    image: pysix/chat-server:latest
+    environment:
+      - MONGO_URI=mongodb://db:27017/chatApp
+    ports:
+      - 3333:3333
+    # these are not required since i am using built image
+    # working_dir: /app
+    # volumes:
+    #   - ./:/app
+    depends_on:
+      - db
+    command: sh -c 'npm start'
+
+  db:
+    container_name: mongodb
+    image: mongo
+    restart: always
+    ports:
+      - 27017:27017
+    volumes:
+       - chat-data:/data/db
+
+volumes:
+  chat-data:
