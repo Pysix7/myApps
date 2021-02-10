@@ -164,13 +164,23 @@ srvr.use((error, req, res, next) => {
  * 
 */
 
-mongoose
-    .connect(CONFIGS.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
-    .then(() => {
-        http.listen(CONFIGS.PORT, () =>
-            console.log(`listening on port :: >> ${CONFIGS.PORT}`)
-        );
-    })
-    .catch(err => {
-        console.log("err :", err);
-    });
+console.log('CONFIGS.MONGO_URI', CONFIGS.MONGO_URI)
+if (CONFIGS.MONGO_URI) {
+    mongoose
+        .connect(CONFIGS.MONGO_URI, { useNewUrlParser: true, useUnifiedTopology: true })
+        .then(() => {
+            http.listen(CONFIGS.PORT, () =>
+                console.log(`listening on port :: >> ${CONFIGS.PORT}`)
+            );
+        })
+        .catch(err => {
+            console.log("err :", err);
+        });
+} else {
+    // running withoud database
+    http.listen(CONFIGS.PORT, () =>
+        console.log(`listening on port :: >> ${CONFIGS.PORT}`)
+    );
+
+}
+
