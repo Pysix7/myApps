@@ -26,7 +26,7 @@
         var socket = io();
         $('form').submit(function(e) {
           e.preventDefault(); // prevents page reloading
-          socket.emit('chat-message', {
+          socket.emit('global-chat-message', {
             body:$('#m').val(),
             senderId: socket.id
           });
@@ -34,7 +34,7 @@
           return false;
         });
 
-        socket.on('chat-message', function(msg){
+        socket.on('global-chat-message', function(msg){
           $('#messages').append($('<li>').text(msg.body));
         });
       });
