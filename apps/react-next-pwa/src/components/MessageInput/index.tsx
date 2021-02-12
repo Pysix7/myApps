@@ -14,12 +14,12 @@ export default function messageInput(props: IProps) {
         <Row className="messageInput">
             <Form onFinish={(values) => handleSendMessage(values, formRef)} form={formRef}>
                 <Row>
-                    <Col span={21}>
+                    <Col xs={18} sm={18} md={21} lg={21} xl={21}>
                         <Form.Item name="message">
                             <Input placeholder="type here..." />
                         </Form.Item>
                     </Col>
-                    <Col span={3}>
+                    <Col xs={6} sm={6} md={3} lg={3} xl={3}>
                         <Form.Item>
                             <Button type="primary" htmlType="submit">Send</Button>
                         </Form.Item>

@@ -34,7 +34,8 @@ const signup = () => {
                     </Form.Item>
                     <Form.Item name="email" rules={[
                         {
-                            pattern: EMAIL
+                            pattern: EMAIL,
+                            message: 'Please provide valid Email'
                         }
                     ]}>
                         <Input placeholder="Your email" />

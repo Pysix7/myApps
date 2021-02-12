@@ -1,7 +1,8 @@
-import React, { PureComponent } from 'react'
-import { Card, Row, Col, Typography } from 'antd';
+import React, { Fragment, PureComponent } from 'react'
+import { Card, Row, Col, Typography, Drawer } from 'antd';
 import { LogoutOutlined } from '@ant-design/icons';
 import Router from 'next/router';
+import Media from 'react-media';
 import ChatBox from '~/components/ChatBox';
 import ContactsList from '~/components/ContactsList';
 import { IMessage } from '~/interfaces/props';
@@ -47,7 +48,7 @@ export default class index extends PureComponent<{}, IState> {
     }
   }
 
-  onListUserClickHandler = (userId: string) => {
+  onListUserClickHandler = (userId: string | null) => {
     this.setState({
       chatUser: userId
     });
@@ -58,34 +59,61 @@ export default class index extends PureComponent<{}, IState> {
     const loggedInUser: any = `${currentUser.username}`;
 
     return (
-      <div className="pageContainer">
-        <Card>
-          <Row className="chatContainer">
-            <Col xs={12} sm={12} md={10} lg={8} xl={8}>
-              <Row className="appName">
-                <Title>React Chat App</Title>
-              </Row>
-              <Row className="loggedInUser">
-                <Col span={24} >
-                  <Title level={2}>Logged in User:
-                    <span className="lnUsername">{loggedInUser}</span>
-                    <LogoutOutlined
-                      onClick={() => logout()}
-                      className="logoutIcon"
-                      title="logout"
-                    />
-                  </Title>
+      <Media query="(max-width: 599px)">
+        {(isMobile: boolean) => (
+          <div className="pageContainer">
+            <Card>
+              <Row gutter={40} className="chatContainer">
+                <Col xs={24} sm={24} md={12} lg={8} xl={8}>
+                  <Row className="appName">
+                    <Title>Anony Chat</Title>
+                  </Row>
+                  <Row className="loggedInUser">
+                    <Col span={24} >
+                      <Title level={3}>Logged in User:
+                            <span className="lnUsername">{loggedInUser}</span>
+                        <LogoutOutlined
+                          onClick={() => logout()}
+                          className="logoutIcon"
+                          title="logout"
+                        />
+                      </Title>
+                    </Col>
+                  </Row>
+                  <ContactsList
+                    onListUserClickHandler={this.onListUserClickHandler}
+                    currentUser={currentUser}
+                  />
                 </Col>
+                {isMobile ? (
+                  <Drawer
+                    placement="bottom"
+                    maskClosable
+                    className="mobileChatDrawer"
+                    visible={chatUser !== null}
+                    onClose={() => this.onListUserClickHandler(null)}
+                  >
+                    <Col xs={24} sm={24} md={12} lg={16} xl={16}>
+                      <div className="chatBoxContainer">
+                        <ChatBox chatUser={chatUser} currentUser={currentUser} isLoggedIn={isLoggedIn} />
+                      </div>
+                    </Col>
+                  </Drawer>
+                ) : (
+                    <Fragment>
+                      <Col xs={24} sm={24} md={12} lg={16} xl={16}>
+                        <div className="chatBoxContainer">
+                          <ChatBox chatUser={chatUser} currentUser={currentUser} isLoggedIn={isLoggedIn} />
+                        </div>
+                      </Col>
+                    </Fragment>
+                  )}
               </Row>
-              <ContactsList
-                onListUserClickHandler={this.onListUserClickHandler}
-                currentUser={currentUser}
-              />
-            </Col>
-            <ChatBox chatUser={chatUser} currentUser={currentUser} isLoggedIn={isLoggedIn} />
-          </Row>
-        </Card>
-      </div>
+            </Card>
+          </div>
+        )
+        }
+      </Media>
     )
   }
 }

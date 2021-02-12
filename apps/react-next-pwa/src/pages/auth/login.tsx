@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, Row, Form, Input, notification } from 'antd';
 import AuthLayout from '~/layouts/AuthLayout';
 import Link from 'next/link';
@@ -8,7 +8,9 @@ import { loginMethod } from '~/services/apiMethods';
 
 const login = () => {
     const [formRef] = Form.useForm();
+    const [logginIn, setLoggingIn] = useState(false);
     const handleLogin = async (values: ILoginFormValues) => {
+        setLoggingIn(true);
         const resp = await loginMethod(values);
         if (resp && resp.status === 'ok') {
             notification.success({
@@ -19,6 +21,7 @@ const login = () => {
         } else {
             notification.error({ message: resp.message });
         }
+        setLoggingIn(false);
     }
 
     return (
@@ -42,7 +45,7 @@ const login = () => {
                         <Input.Password placeholder="Password" type="password" />
                     </Form.Item>
                     <Form.Item>
-                        <Button type="primary" htmlType="submit">Login</Button>
+                        <Button type="primary" htmlType="submit" loading={logginIn}>Login</Button>
                     </Form.Item>
                 </Form>
             </Row>

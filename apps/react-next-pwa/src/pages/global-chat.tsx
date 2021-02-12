@@ -88,7 +88,7 @@ export default class index extends PureComponent<{}, IState> {
                                 onClick={() => Router.push('/')}
                                 style={{ cursor: 'pointer' }}
                             >
-                                <Title>React Chat App</Title>
+                                <Title>Anony Chat</Title>
                             </Row>
                             <Row
                                 onClick={() => Router.push('/auth/login')}
@@ -127,7 +127,7 @@ export default class index extends PureComponent<{}, IState> {
                                                         name="username"
                                                         rules={[{ required: true, message: 'username is required to continue chat' }]}
                                                     >
-                                                        <Input placeholder="username" />
+                                                        <Input placeholder="enter username to start chat" />
                                                     </Form.Item>
                                                 </Col>
                                                 <Col span={3}>

@@ -1,9 +1,9 @@
 {
-  "name": "React + Next.JS PWA",
-  "short_name": "Next PWA",
+  "name": "Anony Chat",
+  "short_name": "an chat app which doesn't save any chat data",
   "theme_color": "#ffffff",
-  "background_color": "#004740",
-  "display": "fullscreen",
+  "background_color": "#40a9ff",
+  "display": "standalone",
   "orientation": "portrait",
   "scope": "/",
   "start_url": "/",

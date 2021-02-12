@@ -14,11 +14,8 @@
             height: 100%;
         }
 
-        & > div:nth-child(1) {
-            padding-right: 24px;
-        }
-        
-        & > div:nth-child(2) {
+        .chatBoxContainer {
+            height: 100%;
             border: 2px dashed #d9d9d9;
         }
 
@@ -43,3 +40,33 @@
         }
     }
 }
+
+@media only screen and (max-width: 599px) {
+    .mobileChatDrawer {
+        .ant-col{
+            height: 100%;
+            padding: 0px !important;
+        }
+        
+        .chatBoxContainer {
+            height: 100%;
+            border: 2px dashed #d9d9d9;
+        }
+
+        .ant-drawer-content-wrapper {
+            height: 85% !important;
+            .ant-drawer-content {
+                .ant-drawer-wrapper-body {
+                    .ant-drawer-header-no-title {
+                        .ant-drawer-close {
+                            padding: 10px;
+                            font-size: 30px !important;
+                            background: var(--primary-color);
+                        }
+                    }
+                }
+            }
+        }
+    }
+  }
+  

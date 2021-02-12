@@ -16,7 +16,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
         />
         <meta name="description" content="Description" />
         <meta name="keywords" content="Keywords" />
-        <title>React + Next.js PWA</title>
+        <title>Anony Chat</title>
 
         <link rel="manifest" href="/manifest.json" />
         <link
@@ -31,7 +31,7 @@ export default function MyApp({ Component, pageProps }: AppProps) {
           type="image/png"
           sizes="32x32"
         />
-        <meta name="theme-color" content="#6495ed" />
+        <meta name="theme-color" content="#40a9ff" />
       </Head>
       <Component {...pageProps} />
     </>
