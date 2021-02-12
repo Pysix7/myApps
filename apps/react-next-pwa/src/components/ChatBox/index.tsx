@@ -6,6 +6,7 @@ import MessageList from '~/components/MessageList';
 import { IMessageFormValues, IMessage, IUser } from '~/interfaces/props';
 import { getUser } from '~/services/apiMethods';
 
+// the styles from this file are moved to global.less 
 // import './index.less';
 
 const { Text } = Typography;
@@ -96,7 +97,7 @@ export default function chatBox(props: IProps) {
 
     const socketId = socket.current && socket.current.id || '';
     return (
-        <Col xs={12} sm={12} md={14} lg={16} xl={16} className="chatBox">
+        <div className="chatBox">
             {chatUser !== null ? (
                 <Fragment>
                     <Row className="contactInfo">
@@ -108,6 +109,6 @@ export default function chatBox(props: IProps) {
                     <MessageInput handleSendMessage={handleSendMessage} />
                 </Fragment>
             ) : null}
-        </Col>
+        </div>
     )
 }

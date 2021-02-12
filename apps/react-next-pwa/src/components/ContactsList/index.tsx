@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { Row, Col, Typography } from 'antd';
+import { Row, Col, Typography, List } from 'antd';
 import { IUser } from '~/interfaces/props';
 import { getAllUsers } from '~/services/apiMethods';
 
 import './index.less';
 
-const { Title } = Typography;
+const { Text } = Typography;
 
 interface IProps {
     onListUserClickHandler: (id: string) => void;
@@ -23,28 +23,38 @@ export default function contactsList({ onListUserClickHandler, currentUser }: IP
         })()
     }, [])
 
-    return (
-        <Row className="contactList">
-            {users && users.length > 0 && users.map((user: IUser) => {
-                if (currentUser.id && currentUser.id !== user.id) {
-                    return (
-                        <Col
-                            className="contact"
-                            key={user.id}
-                            span={24}
-                            onClick={() => onListUserClickHandler(user.id)}
-                        >
-                            <Row gutter={8}>
-                                <Col>
-                                    <Title level={2}>{user.username}</Title>
-                                    <span>{`(${user.email})`}</span>
-                                </Col>
-                            </Row>
+    const renderListItem = (user: IUser) => {
+        if (currentUser?.id !== user.id) {
+            return (
+                <List.Item
+                    className="contact"
+                    key={user.id}
+                    onClick={() => onListUserClickHandler(user.id)}
+                >
+                    <Row>
+                        <Col span={24}>
+                            <Text strong className="userNameText">{user.username}</Text>
+                            <Text>{`(${user.email})`}</Text>
                         </Col>
-                    )
-                }
-                return null;
-            })}
+                    </Row>
+                </List.Item>
+            )
+        } else {
+            return null;
+        }
+    };
+
+    return (
+        <Row className="contactListContainer">
+            {users?.length > 0 && (
+                <List
+                    className="contactList"
+                    size="small"
+                    bordered
+                    dataSource={users}
+                    renderItem={renderListItem}
+                />
+            )}
         </Row>
     )
 }

@@ -6,10 +6,14 @@
     src: local('Nunito'), url(/fonts/nunito-regular.ttf) format('truetype');
 }
 
+html,
+body,
 #__next {
     height: 100%;
     width: 100%;
-    background-color: cornflowerblue;
+    background: url('/large-triangles.svg');
+    background-attachment: fixed;
+    background-color: #40a9ff;
     font-family: 'Nunito', sans-serif;
 
     --primary-color: aquamarine;
@@ -20,7 +24,8 @@
             color: cornflowerblue;
         } 
     }
-        .chatBox {
+    .chatBox {
+        height: 100%;
         .contactInfo {
             height: 8%;
             background-color: aliceblue;
@@ -103,3 +108,17 @@
         }
     }
 }
+
+@media only screen and (max-width: 599px) {
+    html,
+    body,
+    #__next {
+        .chatBox { 
+            .contactInfo {
+                & > div {
+                    font-size: 30px;
+                }
+            }
+        }
+    }
+  }

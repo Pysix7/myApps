@@ -1,12 +1,19 @@
-.contactList {
+.contactListContainer {
     height: 82%;
     overflow-y: auto;
     width: 100%;
     overflow-x: hidden;
+    .contactList {
+        width: 100%;
+        .contact {
+            cursor: pointer;
+            background-color: aliceblue;
+            border-bottom: 1px solid #d9d9d9;
 
-    .contact {
-        cursor: pointer;
-        background-color: aliceblue;
-        border-bottom: 1px solid #d9d9d9;
+            .userNameText {
+                font-size: 30px;
+                margin-right: 10px;
+            }
+        }
     }
 }
