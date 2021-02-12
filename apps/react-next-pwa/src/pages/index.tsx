@@ -66,11 +66,11 @@ export default class index extends PureComponent<{}, IState> {
               <Row gutter={40} className="chatContainer">
                 <Col xs={24} sm={24} md={12} lg={8} xl={8}>
                   <Row className="appName">
-                    <Title>Anony Chat</Title>
+                    <Title>Chat</Title>
                   </Row>
                   <Row className="loggedInUser">
                     <Col span={24} >
-                      <Title level={3}>Logged in User:
+                      <Title level={3}>Logged in user:
                             <span className="lnUsername">{loggedInUser}</span>
                         <LogoutOutlined
                           onClick={() => logout()}

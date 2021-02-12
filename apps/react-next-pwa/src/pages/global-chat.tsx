@@ -40,7 +40,7 @@ export default class index extends PureComponent<{}, IState> {
             if (this.socket !== null) {
                 this.scrollToLatestMsg();
 
-                this.socket.on('chat-message', (message: IMessageType) => {
+                this.socket.on('global-chat-message', (message: IMessageType) => {
                     const { body, senderId } = message;
                     this.setState((prevState) => {
                         const msgs = [
@@ -69,7 +69,7 @@ export default class index extends PureComponent<{}, IState> {
         const { username } = this.state;
 
         if (this.socket !== null) {
-            this.socket.emit('chat-message', {
+            this.socket.emit('global-chat-message', {
                 body: values.message,
                 senderId: username,
             });
@@ -88,7 +88,7 @@ export default class index extends PureComponent<{}, IState> {
                                 onClick={() => Router.push('/')}
                                 style={{ cursor: 'pointer' }}
                             >
-                                <Title>Anony Chat</Title>
+                                <Title>Chat</Title>
                             </Row>
                             <Row
                                 onClick={() => Router.push('/auth/login')}

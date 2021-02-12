@@ -1,6 +1,6 @@
 {
-  "name": "Anony Chat",
-  "short_name": "an chat app which doesn't save any chat data",
+  "name": "Chat",
+  "short_name": "a react chat app",
   "theme_color": "#ffffff",
   "background_color": "#40a9ff",
   "display": "standalone",

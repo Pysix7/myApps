@@ -120,27 +120,27 @@ srvr.use("/users", usersRoutes);
                 socket.on('chat-message', (msg) => {
                     io.to(roomId).emit('chat-message', msg);
                 });
-            } else if (username) {
+            } else {
                 /**
                  * else all connections will join and communicate in global channel
                  */
                 const userName = username || socket.id;
-                io.emit('chat-message', {
+                io.emit('global-chat-message', {
                     body: 'user joined -> ' + userName,
                     senderId: userName
                 });
 
                 // disconnect event handler
                 socket.on('disconnect', () => {
-                    io.emit('chat-message', {
+                    io.emit('global-chat-message', {
                         body: 'user left -> ' + userName,
                         senderId: userName
                     });
                 });
 
-                // chat-message event handler
-                socket.on('chat-message', (msg) => {
-                    io.emit('chat-message', msg);
+                // global-chat-message event handler
+                socket.on('global-chat-message', (msg) => {
+                    io.emit('global-chat-message', msg);
                 });
             }
         });

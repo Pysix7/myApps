@@ -16,7 +16,7 @@ const AuthLayout = ({ title, children }: { title: string, children: React.ReactN
                         onClick={() => Router.push('/')}
                         style={{ cursor: 'pointer' }}
                     >
-                        <Title>Anony Chat</Title>
+                        <Title>Chat</Title>
                     </Row>
                     <Row><Title level={3}>{title}</Title></Row>
                 </Col>
