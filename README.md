@@ -14,8 +14,12 @@
 * multi user chat (by creating and joining rooms)
 * chat model - to create and maintain `roomid` and `participants` 
 * uuid based room-id
-* contact list to display the users .
+* contact list to display the users.
+* react hooks based code.
+
+**Apps links:**
+* Chat - https://pysix-chat.herokuapp.com/
+* NodeJs Global Chat - https://pysix-chat-server.herokuapp.com/ui
 
 ## todo
 * group chat/channel
-* deploy chat app
