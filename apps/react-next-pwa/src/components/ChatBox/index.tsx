@@ -44,11 +44,11 @@ export default function chatBox(props: IProps) {
             (async () => {
                 // fetcth the reciver (chat user) details
                 const userRecord = await getUser({ userId: chatUser });
-                if (userRecord && userRecord.status === 'ok') {
+                if (userRecord?.status === 'ok') {
                     setUserData(userRecord.data)
 
                     // connect to chat
-                    if (userRecord.data && userRecord.data.username && currentUser && currentUser.username) {
+                    if (userRecord.data?.username && currentUser?.username) {
                         const participants = [currentUser.username, userRecord.data.username];
 
                         // connect to a chat room with these users ( participants )
@@ -83,6 +83,12 @@ export default function chatBox(props: IProps) {
 
             })()
         }
+        return function cleanup() {
+            socket.current = null;
+            allMessages.current = [];
+            setMessages([]);
+            setUserData(null);
+        }
     }, [isLoggedIn, chatUser]);
 
     const handleSendMessage = (values: IMessageFormValues, formRef: any) => {
@@ -95,14 +101,14 @@ export default function chatBox(props: IProps) {
         }
     }
 
-    const socketId = socket.current && socket.current.id || '';
+    const socketId = socket.current?.id || '';
     return (
         <div className="chatBox">
             {chatUser !== null ? (
                 <Fragment>
                     <Row className="contactInfo">
                         <Col>
-                            <Text>{chatUserData && chatUserData.username && chatUserData.username}</Text>
+                            <Text>{chatUserData?.username}</Text>
                         </Col>
                     </Row>
                     <MessageList messages={chatMessages} socketId={socketId} chatType="user" />

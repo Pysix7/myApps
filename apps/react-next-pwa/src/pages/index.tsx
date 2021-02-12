@@ -58,6 +58,14 @@ export default class index extends PureComponent<{}, IState> {
     const { chatUser, currentUser, isLoggedIn } = this.state;
     const loggedInUser: any = `${currentUser.username}`;
 
+    const chatBoxContent = (
+      <Col xs={24} sm={24} md={12} lg={16} xl={16}>
+        <div className="chatBoxContainer">
+          <ChatBox chatUser={chatUser} currentUser={currentUser} isLoggedIn={isLoggedIn} />
+        </div>
+      </Col>
+    );
+
     return (
       <Media query="(max-width: 599px)">
         {(isMobile: boolean) => (
@@ -93,19 +101,11 @@ export default class index extends PureComponent<{}, IState> {
                     visible={chatUser !== null}
                     onClose={() => this.onListUserClickHandler(null)}
                   >
-                    <Col xs={24} sm={24} md={12} lg={16} xl={16}>
-                      <div className="chatBoxContainer">
-                        <ChatBox chatUser={chatUser} currentUser={currentUser} isLoggedIn={isLoggedIn} />
-                      </div>
-                    </Col>
+                    {chatBoxContent}
                   </Drawer>
                 ) : (
                     <Fragment>
-                      <Col xs={24} sm={24} md={12} lg={16} xl={16}>
-                        <div className="chatBoxContainer">
-                          <ChatBox chatUser={chatUser} currentUser={currentUser} isLoggedIn={isLoggedIn} />
-                        </div>
-                      </Col>
+                      {chatBoxContent}
                     </Fragment>
                   )}
               </Row>
