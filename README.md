@@ -1,4 +1,4 @@
-# Carbooking app (MERN based)
+# Carbooking app (MERN stack)
 ## features
 * user authentication (login, signup).
 * roundtrip.
@@ -7,7 +7,7 @@
 **Apps links:**
 * Carbooking - https://carbooking1.herokuapp.com/
 
-# Chat app (MERN based)
+# Chat app (MERN stack)
 ## features
 * React PWA (Progessive Web application)
 * user authentication (login, signup)
